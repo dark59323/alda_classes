@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: alda-postgres
+    environment:
+      POSTGRES_USER: dark
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: alda_clases
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
