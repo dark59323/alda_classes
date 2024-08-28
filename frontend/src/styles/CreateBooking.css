@@ -1,0 +1,40 @@
+.create-booking {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.create-booking h2 {
+    margin-bottom: 20px;
+    color: #004d99; /* Azul oscuro */
+}
+
+.create-booking .form-group {
+    margin-bottom: 15px;
+}
+
+.create-booking label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.create-booking input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.create-booking button {
+    background-color: #004d99; /* Azul oscuro */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.create-booking button:hover {
+    background-color: #003366;
+}
