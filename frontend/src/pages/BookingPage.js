@@ -2,6 +2,7 @@
 import React from 'react';
 import BookingList from '../components/Booking/BookingList';
 
+
 const BookingPage = () => {
   return (
     <div>

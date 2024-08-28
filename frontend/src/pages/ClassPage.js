@@ -2,6 +2,7 @@
 import React from 'react';
 import ClassList from '../components/Class/ClassList';
 
+
 const ClassPage = () => {
   return (
     <div>

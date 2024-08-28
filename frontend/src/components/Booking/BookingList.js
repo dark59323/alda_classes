@@ -1,32 +1,50 @@
-// src/components/Booking/BookingList.js
 import React, { useEffect, useState } from 'react';
-import { getAllClassBookings } from '../../api/bookingApi';
+import '../../styles/BookingList.css'; // Asegúrate de crear este archivo de estilo
 
 const BookingList = () => {
-  const [bookings, setBookings] = useState([]);
+    const [bookings, setBookings] = useState([]);
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await getAllClassBookings();
-        setBookings(response.data);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      }
-    };
-    fetchBookings();
-  }, []);
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                const response = await fetch('/api/class-bookings');
+                const data = await response.json();
+                setBookings(data);
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+            }
+        };
 
-  return (
-    <div>
-      <h2>Class Bookings</h2>
-      <ul>
-        {bookings.map((booking) => (
-          <li key={booking.id}>{booking.className} - {booking.date}</li>
-        ))}
-      </ul>
-    </div>
-  );
+        fetchBookings();
+    }, []);
+
+    return (
+        <div className="booking-list">
+            <h2>Lista de Reservas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Clase</th>
+                        <th>Usuario</th>
+                        <th>Fecha Programada</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {bookings.map(booking => (
+                        <tr key={booking.booking_id}>
+                            <td>{booking.booking_id}</td>
+                            <td>{booking.class_id}</td>
+                            <td>{booking.user_id}</td>
+                            <td>{new Date(booking.scheduled_at).toLocaleString()}</td>
+                            <td>{booking.status}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default BookingList;

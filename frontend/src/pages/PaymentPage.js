@@ -2,6 +2,7 @@
 import React from 'react';
 import PaymentList from '../components/Payment/PaymentList';
 
+
 const PaymentPage = () => {
   return (
     <div>

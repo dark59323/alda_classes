@@ -8,6 +8,7 @@ import PaymentPage from './pages/PaymentPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import HomePage from './pages/HomePage'; 
 
+
 function App() {
     return (
         <Router>
