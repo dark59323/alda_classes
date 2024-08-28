@@ -10,7 +10,6 @@ import Footer from './components/Footer';
 
 const App = () => {
   return (
-<<<<<<< HEAD
     <Router> {/* Envuelve toda la aplicación en Router */}
       <AuthProvider>
         <Navbar />
@@ -20,17 +19,8 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/" element={<ProductList />} />
         </Routes>
+        <Footer /> {/* Asegúrate de incluir el Footer si es necesario */}
       </AuthProvider>
-=======
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<ProductList />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      <Footer />
->>>>>>> 8deefac5f89f17d2849e008ffbd17dfe31242ad1
     </Router>
   );
 };
