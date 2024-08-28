@@ -3,70 +3,81 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Cart.css';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: 'Introducción a las Matemáticas', price: 30.00, quantity: 1 },
+    { id: 2, name: 'Desarrollo Web Frontend', price: 50.00, quantity: 2 },
+    { id: 3, name: 'JavaScript Avanzado', price: 40.00, quantity: 1 }
+  ]);
   const [total, setTotal] = useState(0);
   const [purchaseMessage, setPurchaseMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/cart-items/view'); // Ajusta la URL según sea necesario
-        if (!response.ok) {
-          throw new Error('Failed to fetch cart items');
-        }
-        const data = await response.json();
-        setCartItems(data);
+    // Calcular el total solo con los datos de ejemplo
+    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    setTotal(totalPrice);
+  }, [cartItems]);
 
-        // Calcular el total
-        const totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        setTotal(totalPrice);
-      } catch (error) {
-        console.error('Error fetching cart items:', error);
-      }
-    };
+  const handleRemoveFromCart = (itemId) => {
+    // Elimina el ítem del carrito
+    const updatedCartItems = cartItems.filter(item => item.id !== itemId);
+    setCartItems(updatedCartItems);
 
-    fetchCartItems();
-  }, []);
-
-  const handleRemoveFromCart = async (itemId) => {
-    try {
-      await fetch(`http://localhost:3000/api/cart-items/delete/${itemId}`, {
-        method: 'DELETE',
-      });
-      // Actualiza la lista del carrito después de eliminar el ítem
-      setCartItems(cartItems.filter(item => item.id !== itemId));
-      // Recalcula el total
-      const updatedTotal = cartItems
-        .filter(item => item.id !== itemId)
-        .reduce((sum, item) => sum + item.price * item.quantity, 0);
-      setTotal(updatedTotal);
-    } catch (error) {
-      console.error('Error removing item from cart:', error);
-    }
+    // Actualiza el total
+    const updatedTotal = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    setTotal(updatedTotal);
   };
 
   const handlePurchase = () => {
-    setPurchaseMessage('Compra exitosa');
-    // Opcional: Puedes agregar aquí la lógica para finalizar la compra si es necesario.
+    if (cartItems.length === 0) {
+      setErrorMessage('No hay productos en el carrito para comprar.');
+      setPurchaseMessage('');
+    } else {
+      setErrorMessage('');
+      setPurchaseMessage('Compra exitosa');
+    }
   };
 
   return (
     <div className="cart-container">
-      <h1>Your Cart</h1>
+      <h1>Tu Carrito</h1>
       {purchaseMessage && <p className="purchase-message">{purchaseMessage}</p>}
-      <ul className="cart-items">
-        {cartItems.length === 0 ? (
-          <li>Your cart is empty</li>
-        ) : (
-          cartItems.map(item => (
-            <li key={item.id} className="cart-item">
-              <span>{item.name}</span> <span>${item.price}</span>
-              <button onClick={() => handleRemoveFromCart(item.id)} className="remove-button">Remove</button>
-            </li>
-          ))
-        )}
-      </ul>
-      <h2>Total: ${total}</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      
+      <table className="cart-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartItems.length === 0 ? (
+            <tr>
+              <td colSpan="4">Tu carrito está vacío</td>
+            </tr>
+          ) : (
+            cartItems.map(item => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>${item.price.toFixed(2)}</td>
+                <td>{item.quantity}</td>
+                <td>
+                  <button 
+                    onClick={() => handleRemoveFromCart(item.id)} 
+                    className="remove-button">
+                    &times;
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+      
+    
       <button className="checkout-button" onClick={handlePurchase}>Comprar</button>
     </div>
   );

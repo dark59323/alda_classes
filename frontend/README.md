@@ -1,3 +1,32 @@
+# Proyecto de Gestión de Tareas
+
+Este proyecto es una aplicación de gestión de tareas que utiliza un backend desarrollado con Express, una base de datos PostgreSQL, y un frontend construido con React. La configuración de la base de datos se gestiona mediante Docker.
+
+## Estructura del Proyecto
+
+- *Backend*: Implementado con Express. Proporciona una API RESTful para gestionar las tareas.
+- *Base de Datos*: PostgreSQL gestionada mediante Docker.
+- *Frontend*: Construido con React, consume la API del backend para mostrar y gestionar las tareas.
+
+## Requisitos Previos
+
+Asegúrate de tener instalados los siguientes componentes en tu máquina:
+
+- [Node.js](https://nodejs.org/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+## Instalación y Configuración
+
+Sigue los pasos a continuación para configurar y ejecutar el proyecto en tu máquina local.
+
+### 1. Clonar el Repositorio
+
+```bash
+git clone https://github.com/usuario/proyecto-gestion-tareas.git
+cd proyecto-gestion-tareas
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

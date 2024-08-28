@@ -84,7 +84,12 @@ INSERT INTO classes (teacher_id, title, description, price, duration)
 VALUES
     (1, 'Introducción a las Matemáticas', 'Curso básico de matemáticas para principiantes.', 30.00, 60),
     (2, 'Desarrollo Web Frontend', 'Curso de desarrollo web con enfoque en tecnologías frontend.', 50.00, 120),
-    (2, 'JavaScript Avanzado', 'Curso avanzado de JavaScript para desarrolladores intermedios y avanzados.', 40.00, 90);
+    (2, 'JavaScript Avanzado', 'Curso avanzado de JavaScript para desarrolladores intermedios y avanzados.', 40.00, 90),
+    (2, 'Fundamentos de Física', 'Curso introductorio a los conceptos básicos de física.', 35.00, 75),
+    (1, 'Diseño Gráfico con Photoshop', 'Curso práctico sobre el uso de Photoshop para diseño gráfico.', 45.00, 100),
+    (2, 'Desarrollo de Aplicaciones Móviles', 'Curso para aprender a desarrollar aplicaciones para dispositivos móviles.', 55.00, 150),
+    (1, 'Algoritmos y Estructuras de Datos', 'Curso avanzado sobre algoritmos y estructuras de datos en programación.', 40.00, 120),
+    (2, 'Introducción a la Inteligencia Artificial', 'Curso básico sobre conceptos y aplicaciones de inteligencia artificial.', 60.00, 90);
 
 -- Insertar registros en la tabla de reservas de clases
 INSERT INTO class_bookings (class_id, user_id, scheduled_at, status)

@@ -41,7 +41,7 @@ const updateUser = async (id, userData) => {
 // Eliminar un usuario por ID
 const deleteUser = async (id) => {
     const res = await client.query('DELETE FROM users WHERE user_id = $1 RETURNING *', [id]);
-    return res.rowCount > 0; // Devuelve true si se eliminó al menos un registro
+    return res.rowCount > 0; 
 };
 
 // Exportar las funciones
