@@ -2,16 +2,26 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import { useAuth } from './AuthContext'; // Importa el contexto de autenticación
+import axios from 'axios'; // Importa axios para las solicitudes HTTP
 import '../styles/ProductItem.css';
 
 const ProductItem = ({ product }) => {
-  const { isAuthenticated } = useAuth(); // Obtén el estado de autenticación
+  const { isAuthenticated, userId } = useAuth(); // Obtén el estado de autenticación y el userId
   const navigate = useNavigate(); // Obtén la función para redirigir
 
-  const addToCart = () => {
+  const addToCart = async () => {
     if (isAuthenticated) {
-      console.log(`Adding ${product.name} to cart`);
-      // Lógica para agregar al carrito
+      try {
+        await axios.post('http://localhost:3000/api/cart-items/insert', {
+          userId,
+          productId: product.id,
+          quantity: 1 // Puedes ajustar la cantidad según sea necesario
+        });
+        console.log(`Added ${product.name} to cart`);
+        // Opcional: Redirigir o mostrar un mensaje de éxito
+      } catch (error) {
+        console.error('Error adding product to cart', error);
+      }
     } else {
       navigate('/login'); // Redirige al inicio de sesión si no está autenticado
     }
