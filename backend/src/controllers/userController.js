@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const userModel = require('../models/userModel');
 
 // Clave secreta para JWT (debería almacenarse en un archivo de configuración o variable de entorno)
@@ -10,10 +9,9 @@ const authenticateUser = async (email, password) => {
     try {
         const users = await userModel.getUserByEmail(email);
         if (users.length === 0) return null;
-        
+
         const user = users[0];
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) return null;
+        if (user.password !== password) return null;
 
         return user;
     } catch (error) {
@@ -64,8 +62,7 @@ const createUser = async (req, res) => {
     const { name, email, password, role } = req.body;
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await userModel.createUser({ name, email, password: hashedPassword, role });
+        const newUser = await userModel.createUser({ name, email, password, role });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear el usuario' });
@@ -81,8 +78,7 @@ const updateUser = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        const hashedPassword = password ? await bcrypt.hash(password, 10) : user.password;
-        const updatedUser = await userModel.updateUser(req.params.id, { name, email, password: hashedPassword, role });
+        const updatedUser = await userModel.updateUser(req.params.id, { name, email, password, role });
         res.json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: 'Error al actualizar el usuario' });

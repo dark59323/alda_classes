@@ -12,7 +12,7 @@ const getUserById = async (id) => {
     return res.rows[0];
 };
 
-// Obtener un usuario por email
+// Obtener un usuario por correo electrónico
 const getUserByEmail = async (email) => {
     const res = await client.query('SELECT * FROM users WHERE email = $1', [email]);
     return res.rows;

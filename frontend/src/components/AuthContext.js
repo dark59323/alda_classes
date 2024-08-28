@@ -5,18 +5,14 @@ import { useNavigate } from 'react-router-dom';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
   const navigate = useNavigate();
 
-  const login = () => {
-    setIsAuthenticated(true);
-    navigate('/');
-  };
-
+  const login = () => setIsAuthenticated(true);
   const logout = () => {
+    localStorage.removeItem('authToken');
     setIsAuthenticated(false);
-    localStorage.removeItem('authToken'); // Limpia el token del almacenamiento local
-    navigate('/login');
+    navigate('/login'); // Redirige al usuario a la página de login después de cerrar sesión
   };
 
   return (
@@ -26,10 +22,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

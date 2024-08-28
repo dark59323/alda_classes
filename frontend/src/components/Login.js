@@ -1,10 +1,11 @@
+// src/Login.js
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css'; // Asegúrate de tener los estilos necesarios
 
 const Login = () => {
-  const { login } = useAuth(); // Obtén la función para iniciar sesión del contexto
+  const { isAuthenticated, login, logout } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,7 +29,6 @@ const Login = () => {
 
       const data = await response.json();
 
-      // Aquí debes manejar el token y actualizar el estado de autenticación
       if (data.token) {
         localStorage.setItem('authToken', data.token); // Guarda el token en el almacenamiento local
         login(); // Actualiza el estado de autenticación
@@ -43,30 +43,34 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Iniciar sesión</button>
-        {error && <p className="error">{error}</p>}
-      </form>
+      {!isAuthenticated ? (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Iniciar sesión</button>
+          {error && <p className="error">{error}</p>}
+        </form>
+      ) : (
+        <button onClick={logout}>Cerrar sesión</button>
+      )}
     </div>
   );
 };
