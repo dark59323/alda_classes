@@ -1,4 +1,3 @@
-// src/Login.js
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -44,30 +43,36 @@ const Login = () => {
   return (
     <div className="login-container">
       {!isAuthenticated ? (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        <div>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit">Iniciar sesión</button>
+            {error && <p className="error">{error}</p>}
+          </form>
+          <div className="signup-link">
+            <p>¿No estás registrado?</p>
+            <button onClick={() => navigate('/register')}>Regístrate</button>
           </div>
-          <div>
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Iniciar sesión</button>
-          {error && <p className="error">{error}</p>}
-        </form>
+        </div>
       ) : (
         <button onClick={logout}>Cerrar sesión</button>
       )}

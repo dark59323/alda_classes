@@ -7,6 +7,7 @@ import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import Login from './components/Login';
 import Footer from './components/Footer';
+import CreateUser from './components/CreateUser'; 
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/products" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/" element={<ProductList />} />
+          <Route path="/register" element={<CreateUser />} />
         </Routes>
         <Footer /> {/* Asegúrate de incluir el Footer si es necesario */}
       </AuthProvider>
