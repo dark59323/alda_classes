@@ -12,6 +12,12 @@ const getUserById = async (id) => {
     return res.rows[0];
 };
 
+// Obtener un usuario por email
+const getUserByEmail = async (email) => {
+    const res = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+    return res.rows;
+};
+
 // Crear un nuevo usuario
 const createUser = async (userData) => {
     const { name, email, password, role } = userData;
@@ -39,4 +45,4 @@ const deleteUser = async (id) => {
 };
 
 // Exportar las funciones
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getUsers, getUserById, getUserByEmail, createUser, updateUser, deleteUser };

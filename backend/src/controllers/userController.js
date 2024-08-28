@@ -1,68 +1,105 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const userModel = require('../models/userModel');
 
-// Obtener todos los usuarios
+// Clave secreta para JWT (debería almacenarse en un archivo de configuración o variable de entorno)
+const JWT_SECRET = 'tu_clave_secreta_aqui';
+
+// Función para autenticar a un usuario
+const authenticateUser = async (email, password) => {
+    try {
+        const users = await userModel.getUserByEmail(email);
+        if (users.length === 0) return null;
+        
+        const user = users[0];
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return null;
+
+        return user;
+    } catch (error) {
+        throw new Error('Error al autenticar al usuario');
+    }
+};
+
+// Controlador para iniciar sesión
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authenticateUser(email, password);
+        if (!user) {
+            return res.status(401).json({ message: 'Credenciales incorrectas' });
+        }
+
+        const token = jwt.sign({ userId: user.user_id }, JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
+};
+
+// Controladores CRUD para usuarios
 const getUsers = async (req, res) => {
     try {
         const users = await userModel.getUsers();
         res.json(users);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los usuarios' });
     }
 };
 
-// Obtener un usuario por ID
 const getUserById = async (req, res) => {
     try {
         const user = await userModel.getUserById(req.params.id);
-        if (user) {
-            res.json(user);
-        } else {
-            res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener el usuario' });
     }
 };
 
-// Crear un nuevo usuario
 const createUser = async (req, res) => {
+    const { name, email, password, role } = req.body;
+
     try {
-        const { name, email, password, role } = req.body;
-        // Asegúrate de validar los datos de entrada aquí
-        const newUser = await userModel.createUser({ name, email, password, role });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = await userModel.createUser({ name, email, password: hashedPassword, role });
         res.status(201).json(newUser);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al crear el usuario' });
     }
 };
 
-// Actualizar un usuario por ID
 const updateUser = async (req, res) => {
+    const { name, email, password, role } = req.body;
+
     try {
-        const { name, email, password, role } = req.body;
-        const updatedUser = await userModel.updateUser(req.params.id, { name, email, password, role });
-        if (updatedUser) {
-            res.json(updatedUser);
-        } else {
-            res.status(404).json({ error: 'User not found' });
+        const user = await userModel.getUserById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+
+        const hashedPassword = password ? await bcrypt.hash(password, 10) : user.password;
+        const updatedUser = await userModel.updateUser(req.params.id, { name, email, password: hashedPassword, role });
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar el usuario' });
     }
 };
 
-// Eliminar un usuario por ID
 const deleteUser = async (req, res) => {
     try {
-        const result = await userModel.deleteUser(req.params.id);
-        if (result) {
-            res.status(204).send(); // No content
-        } else {
-            res.status(404).json({ error: 'User not found' });
+        const success = await userModel.deleteUser(req.params.id);
+        if (!success) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar el usuario' });
     }
 };
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+// Exportar los controladores
+module.exports = { login, getUsers, getUserById, createUser, updateUser, deleteUser };
