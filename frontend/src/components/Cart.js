@@ -1,14 +1,30 @@
-// src/components/Cart.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Cart.css';
 
 const Cart = () => {
-  const cartItems = [
-    { id: 1, name: 'Product 1', price: 100 },
-    // Aquí agregarías productos al carrito
-  ];
+  const [cartItems, setCartItems] = useState([]);
+  const [total, setTotal] = useState(0);
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/cart/view'); // Ajusta la URL según sea necesario
+        if (!response.ok) {
+          throw new Error('Failed to fetch cart items');
+        }
+        const data = await response.json();
+        setCartItems(data);
+
+        // Calcular el total
+        const totalPrice = data.reduce((sum, item) => sum + item.price, 0);
+        setTotal(totalPrice);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
 
   return (
     <div className="cart-container">
