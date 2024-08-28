@@ -6,9 +6,11 @@ import Navbar from './components/Navbar';
 import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import Login from './components/Login';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
+<<<<<<< HEAD
     <Router> {/* Envuelve toda la aplicación en Router */}
       <AuthProvider>
         <Navbar />
@@ -19,6 +21,16 @@ const App = () => {
           <Route path="/" element={<ProductList />} />
         </Routes>
       </AuthProvider>
+=======
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<ProductList />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      <Footer />
+>>>>>>> 8deefac5f89f17d2849e008ffbd17dfe31242ad1
     </Router>
   );
 };
