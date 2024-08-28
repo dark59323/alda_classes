@@ -1,3 +1,4 @@
+// src/controllers/classController.js
 const classModel = require('../models/classModel');
 
 // Obtener todas las clases

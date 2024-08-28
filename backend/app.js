@@ -1,7 +1,10 @@
 const express = require('express');
+const cors = require('cors'); // Importa el paquete cors
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
-const bodyParser = require('body-parser');
+
+// Importa las rutas
 const userRoutes = require('./src/routes/userRoutes');
 const classRoutes = require('./src/routes/classRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
@@ -9,6 +12,9 @@ const cartItemRoutes = require('./src/routes/cartItemRoutes');
 const classBookingRoutes = require('./src/routes/classBookingRoutes');
 const shoppingCartRoutes = require('./src/routes/shoppingCartRoutes');
 const teacherRoutes = require('./src/routes/teacherRoutes');
+
+// Configura CORS
+app.use(cors()); // Habilita CORS para todos los orígenes
 
 // Middleware
 app.use(bodyParser.json());
