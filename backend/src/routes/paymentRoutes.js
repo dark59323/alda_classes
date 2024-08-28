@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
 
-// Obtener todos los pagos
+// Obtener todos los pagoss
 router.get('/view', paymentController.getPayments);
 
 // Obtener un pago por ID
